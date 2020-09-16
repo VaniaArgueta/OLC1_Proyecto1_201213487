@@ -1,6 +1,7 @@
 __author__ = "Vania Argueta - 201213487"
 
 from LexicoHTML import *
+from LexicoRMT import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -9,6 +10,7 @@ import os.path
 
 class Principal:
     def __init__(self,window):
+        self.analisisRMT = LexicoRMT()
         self.extension = ''
         self.ruta = ''
         self.ventana = window
@@ -53,6 +55,10 @@ class Principal:
         self.consola = Text(frame, height=30, width=40, background = '#303750', foreground = '#f3d8e0', font='Helvetica')
         self.consola.grid(row=7,column=110)
 
+        ################################__BOTON__#################################
+        self.boton = Button(frame, text ="RMT", command = lambda: self.analisisRMT.analizarLexico(self.editor.get("0.0","end"))) # , command = self.metodo
+        self.boton.grid(row=32,column=2)
+
     def mostrarMensajeAcercaDe(self):
         mensaje = 'Proyecto 1 - Organización de Lenguajes y Compiladores1\nVania Argueta Rodríguez\nCarné 2012-13487'
         command= messagebox.showinfo(message= mensaje, title="Acerca del proyecto")
@@ -64,11 +70,9 @@ class Principal:
         messagebox.showinfo(message= self.extension, title="Extensión del archivo")
 
     def abrirArchivo(self):
-
         filename = filedialog.askopenfilename(initialdir = "/",title = "Abrir Archivo",filetypes = (("HTML files","*.html;*.HTML"),("CSS files","*.css;*.CSS"),("JS files","*.js;*.JS"),("RMT files","*.rmt;*.RMT"),("All files","*.*")))
         #print(filedialog.askopenfilename(initialdir = "/",title = "Open file",filetypes = (("HTML files","*.html;*.HTML"),("CSS files","*.css;*.CSS"),("JS files","*.js;*.JS"),("All files","*.*"))))
-        f=open(filename)
-    
+        f=open(filename)    
         txt = f.read()  
         self.editor.delete("1.0","end")
         self.editor.insert('0.0',txt)
@@ -110,6 +114,9 @@ class Principal:
             command= messagebox.showinfo(message= "Se analizará un archivo con extensión " + self.extension, title="Análisis JavaScript")
         elif self.extension == '.rmt' or self.extension == '.RMT':
             command= messagebox.showinfo(message= "Se analizará un archivo con extensión " + self.extension, title="Análisis RMT")
+            #command= messagebox.showinfo(message= "EJecutar análisis " + self.analisisRMT.analisisLexico('jelou'), title="Análisis RMT")
+            if self.editor.get("0.0","end") != '':
+                self.analisisRMT.analizarLexico(self.editor.get("0.0","end"))
         else:
             command= messagebox.showinfo(message= "Debe abrir un archivo con extensión HTML, CSS, JS o RMT", title="Error")
 
