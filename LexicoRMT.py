@@ -12,9 +12,8 @@ class LexicoRMT:
         self.fila = 0
         self.columna = 0
         self.estado = 0
-        self.aux = False #True = 0
+        self.aux = False #falso
         self.tablaToken = ''
-        #self.i = 0
 
     def analizarLexico(self, cadena):   
         cadena = cadena + ' '
@@ -24,11 +23,7 @@ class LexicoRMT:
         for i in range(len(cadena)):
             caracter = cadena[i]
             #command= messagebox.showinfo(message= "Estado " + str(self.estado) + '->' + caracter, title="Análisis RMT")
-            command= messagebox.showinfo(message= "Estado " + str(self.estado) +" i->" + str(i) + '->' + caracter, title="Análisis RMT")
-            
-            #print(caracter)    
-            if self.aux == True:
-                self.estado = 0        
+            print(caracter)            
             
             if self.estado == 0:
                 if caracter == '\n':
@@ -69,23 +64,19 @@ class LexicoRMT:
                     #command= messagebox.showinfo(message= "Estado 2 isalpha " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
-                    self.aux = False
                 elif caracter.isdigit():
                     #command= messagebox.showinfo(message= "Estado 2 isdigit " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
-                    self.aux = False
                 elif caracter == '_':
                     #command= messagebox.showinfo(message= "Estado 2_ " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
-                    self.aux = False
                 else:                        
                     #command= messagebox.showinfo(message= "Aceptó " + caracter, title="Análisis RMT")
-                    self.insertarToken('Identificador',self.lexema, self.fila, self.columna)                    
-                    i = i-1
+                    self.insertarToken('Identificador',self.lexema, self.fila, self.columna)
                     self.estado = 0
-                    self.aux = True
+                    i = i-1
 
             elif self.estado == 3:
                 if caracter.isdigit():
@@ -93,22 +84,18 @@ class LexicoRMT:
                 elif caracter == '.':
                     self.lexema = self.lexema + caracter
                     estado = 4
-                    self.aux = False
                 else:
-                    self.insertarToken('Número',self.lexema, self.fila, self.columna)                  
-                    i = i-1
+                    self.insertarToken('Número',self.lexema, self.fila, self.columna)
                     self.estado = 0
-                    self.aux = True
+                    i = i-1
             elif self.estado == 4:
                 if caracter.isdigit():
                     self.lexema = self.lexema + caracter
                     estado = 3
-                    self.aux = False
                 else:
                     self.insertarToken('Número',self.lexema, self.fila, self.columna)
-                    i = i-1
                     self.estado = 0
-                    self.aux = True
+                    i = i-1
 
         #self.imprimirListaTokens()
         rutaToken = "/home/vania/holis.html"
@@ -128,7 +115,7 @@ class LexicoRMT:
         self.listaTokens.append(token)
         print('Token ' + tipo +' '+ lex )
         self.lexema = ''
-        self.estado = 0
+        #self.estado = 0
 
         
     
@@ -138,10 +125,10 @@ class LexicoRMT:
         print('Error ' + descripcion)
         self.listaErrores.append(error)
         self.lexema = ''
-        self.estado = 0
+        #self.estado = 0
     
     def imprimirListaTokens(self):
-        tabla = "<HTML><HEAD></HEAD><BODY><TABLE font = Arial><TR><TH>Tipo</TH><TH>self.lexema</TH></TR>" + self.tablaToken + "</table></body></html>"
+        tabla = "<HTML><HEAD></HEAD><BODY><TABLE><TR><TH>Tipo</TH><TH>self.lexema</TH></TR>" + self.tablaToken + "</table></body></html>"
         
     
     def imprimirListaErrores(self):
