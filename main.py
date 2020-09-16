@@ -2,6 +2,8 @@ __author__ = "Vania Argueta - 201213487"
 
 from LexicoHTML import *
 from LexicoRMT import *
+from LexicoCSS import *
+from LexicoJS import *
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox

@@ -1,6 +1,7 @@
 from Error import *
 from Token import *
 from tkinter import messagebox
+import webbrowser
 class LexicoRMT:
     
     def __init__(self):
@@ -12,18 +13,24 @@ class LexicoRMT:
         self.fila = 0
         self.columna = 0
         self.estado = 0
-        self.aux = False #falso
+        self.aux = False #falso normal, true retroceder caracter
         self.tablaToken = ''
+        self.tablaError = ''
 
     def analizarLexico(self, cadena):   
-        cadena = cadena + ' '
+        cadena = cadena + '                                                                    '
         #command= messagebox.showinfo(message= cadena, title="Análisis RMT")
                  
         caracter = ''
-        for i in range(len(cadena)):
+        lim = len(cadena)
+        for i in range(lim):
+
             caracter = cadena[i]
+            if self.aux == True:
+                caracter = cadena[i-1]
+                lim+=1
             #command= messagebox.showinfo(message= "Estado " + str(self.estado) + '->' + caracter, title="Análisis RMT")
-            print(caracter)            
+            #print(caracter)            
             
             if self.estado == 0:
                 if caracter == '\n':
@@ -77,6 +84,7 @@ class LexicoRMT:
                     self.insertarToken('Identificador',self.lexema, self.fila, self.columna)
                     self.estado = 0
                     i = i-1
+                    self.aux = True
 
             elif self.estado == 3:
                 if caracter.isdigit():
@@ -88,6 +96,7 @@ class LexicoRMT:
                     self.insertarToken('Número',self.lexema, self.fila, self.columna)
                     self.estado = 0
                     i = i-1
+                    self.aux = True
             elif self.estado == 4:
                 if caracter.isdigit():
                     self.lexema = self.lexema + caracter
@@ -96,45 +105,40 @@ class LexicoRMT:
                     self.insertarToken('Número',self.lexema, self.fila, self.columna)
                     self.estado = 0
                     i = i-1
-
-        #self.imprimirListaTokens()
-        rutaToken = "/home/vania/holis.html"
-        archivoGuardado_=open(rutaToken, "w", encoding="utf-8")
-        tabla = "<HTML><HEAD></HEAD><BODY><TABLE><TR><TH>Tipo</TH><TH>Lexema</TH></TR>" + self.tablaToken + "</table></body></html>"
-        
-        archivoGuardado_.write(tabla)
-        archivoGuardado_.close() 
-        #webbrowser.open_new_tab(rutaToken)
-        #self.imprimirListaErrores()             
+                    self.aux = True
+        self.imprimir()                   
  
     
     def insertarToken(self, tipo, lex, fila, columna):
         command= messagebox.showinfo(message= "Aceptó " + lex, title="Análisis RMT")
-        self.tablaToken = self.tablaToken + "<TR><TD>"+tipo+"</TD><TD>"+lex+"</TD></TR>"
+        self.tablaToken = self.tablaToken + "<TR><TD>"+tipo+"</TD><TD>"+lex+"</TD><TD>"+str(fila)+"</TD><TD>"+str(columna)+"</TD></TR>"
         token = Token(tipo, lex, 0, columna)
         self.listaTokens.append(token)
         print('Token ' + tipo +' '+ lex )
         self.lexema = ''
-        #self.estado = 0
-
-        
+        #self.estado = 0        
     
     def insertarError(self, descripcion, fila, columna):  
-        command= messagebox.showinfo(message= "Error " + descripcion, title="Análisis RMT")      
+        command= messagebox.showinfo(message= "Error " + descripcion, title="Análisis RMT")  
+        self.tablaError = self.tablaError + "<TR><TD>"+descripcion+"</TD><TD>"+str(fila)+"</TD><TD>"+str(columna)+"</TD></TR>"
         error = Error(descripcion, fila, columna)
         print('Error ' + descripcion)
         self.listaErrores.append(error)
         self.lexema = ''
         #self.estado = 0
     
-    def imprimirListaTokens(self):
-        tabla = "<HTML><HEAD></HEAD><BODY><TABLE><TR><TH>Tipo</TH><TH>self.lexema</TH></TR>" + self.tablaToken + "</table></body></html>"
-        
-    
-    def imprimirListaErrores(self):
+    def imprimir(self):
+        tabla = "<HTML><HEAD></HEAD><BODY><H1>Reporte de Tokens</H1><TABLE border = \"1\"><font face=\"Arial\"><TR><TH>Tipo</TH><TH>Lexema</TH><TH>Fila</TH><TH>Columna</TH></TR>" + self.tablaToken + "</font></table><BR><BR><H1>Reporte de Errores Léxicos</H1><TABLE border = \"1\"><TR><TH>Descripción</TH><TH>Fila</TH><TH>Columna</TH></TR>" + self.tablaError + "</table></body></html>"
+        rutaToken = "/home/vania/reporteRMT.html"
+        archivoGuardado_=open(rutaToken, "w", encoding="utf-8")
+        archivoGuardado_.write(tabla)
+        archivoGuardado_.close() 
+        self.tablaError = ''
+        self.tablaToken = ''
+        webbrowser.open_new_tab(rutaToken)
 
-        for error in self.listaErrores:
-            print(error)
+ 
+
             
 
 
