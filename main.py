@@ -13,6 +13,7 @@ import os.path
 class Principal:
     def __init__(self,window):
         self.analisisRMT = LexicoRMT()
+        self.analisisHTML = LexicoHTML()
         self.extension = ''
         self.ruta = ''
         self.ventana = window
@@ -60,6 +61,8 @@ class Principal:
         ################################__BOTON__#################################
         self.boton = Button(frame, text ="RMT", command = lambda: self.analisisRMT.analizarLexico(self.editor.get("0.0","end"))) # , command = self.metodo
         self.boton.grid(row=32,column=2)
+        self.botonHTML = Button(frame, text ="HTML", command = lambda: self.analizarHTML()) # , command = self.metodo
+        self.botonHTML.grid(row=32,column=8)
 
     def mostrarMensajeAcercaDe(self):
         mensaje = 'Proyecto 1 - Organización de Lenguajes y Compiladores1\nVania Argueta Rodríguez\nCarné 2012-13487'
@@ -94,6 +97,11 @@ class Principal:
             command= messagebox.showinfo(message= "Archivo con extensión " + self.extension, title="Archivo Guardado")
         else:
             self.guardarComo()
+    
+    def analizarHTML(self):
+        self.consola.delete("1.0","end")
+        self.consola.insert('0.0',self.analisisHTML.analizar(self.editor.get("0.0","end"), 0))
+        
 
     def guardarComo(self):
         guardarC = filedialog.asksaveasfilename(initialdir = "/media/vania/",title = "Guardar como", defaultextension = ".txt", filetypes = (("HTML files","*.html;*.HTML"),("CSS files","*.css;*.CSS"),("JS files","*.js;*.JS"),("RMT files","*.rmt;*.RMT"),("All files","*.*")))

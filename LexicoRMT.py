@@ -71,38 +71,47 @@ class LexicoRMT:
                     #command= messagebox.showinfo(message= "Estado 2 isalpha " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
+                    self.columna = self.columna + 1
                 elif caracter.isdigit():
                     #command= messagebox.showinfo(message= "Estado 2 isdigit " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
+                    self.columna = self.columna + 1
                 elif caracter == '_':
                     #command= messagebox.showinfo(message= "Estado 2_ " + caracter + " Pos "+ str(i), title="Análisis RMT")
                     self.lexema = self.lexema + caracter
                     self.estado = 2
+                    self.columna = self.columna + 1
                 else:                        
                     #command= messagebox.showinfo(message= "Aceptó " + caracter, title="Análisis RMT")
                     self.insertarToken('Identificador',self.lexema, self.fila, self.columna)
                     self.estado = 0
                     i = i-1
                     self.aux = True
+                    self.columna = self.columna + 1
 
             elif self.estado == 3:
                 if caracter.isdigit():
                     self.lexema = self.lexema + caracter
+                    self.columna = self.columna + 1
                 elif caracter == '.':
                     self.lexema = self.lexema + caracter
+                    self.columna = self.columna + 1
                     estado = 4
                 else:
                     self.insertarToken('Número',self.lexema, self.fila, self.columna)
+                    self.columna = self.columna + 1
                     self.estado = 0
                     i = i-1
                     self.aux = True
             elif self.estado == 4:
                 if caracter.isdigit():
                     self.lexema = self.lexema + caracter
+                    self.columna = self.columna + 1
                     estado = 3
                 else:
                     self.insertarToken('Número',self.lexema, self.fila, self.columna)
+                    self.columna = self.columna + 1
                     self.estado = 0
                     i = i-1
                     self.aux = True
