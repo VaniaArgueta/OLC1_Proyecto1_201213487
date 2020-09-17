@@ -14,6 +14,7 @@ class Principal:
     def __init__(self,window):
         self.analisisRMT = LexicoRMT()
         self.analisisHTML = LexicoHTML()
+        self.analisisCSS = LexicoCSS()
         self.extension = ''
         self.ruta = ''
         self.ventana = window
@@ -52,17 +53,19 @@ class Principal:
         menubar.add_cascade(label="Ayuda", menu=helpmenu)
         
         #TextArea----------------------------------------------
-        self.editor = Text(frame, height=30, width=90, background='#cfd3ca', font='Helvetica')
+        self.editor = Text(frame, height=30, width=50, background='#cfd3ca', font='Helvetica')
         self.editor.grid(row=7,column=2)
 
-        self.consola = Text(frame, height=30, width=40, background = '#303750', foreground = '#f3d8e0', font='Helvetica')
-        self.consola.grid(row=7,column=110)
+        self.consola = Text(frame, height=30, width=60, background = '#303750', foreground = '#f3d8e0', font='Helvetica')
+        self.consola.grid(row=7,column=75)
 
         ################################__BOTON__#################################
         self.boton = Button(frame, text ="RMT", command = lambda: self.analisisRMT.analizarLexico(self.editor.get("0.0","end"))) # , command = self.metodo
         self.boton.grid(row=32,column=2)
         self.botonHTML = Button(frame, text ="HTML", command = lambda: self.analizarHTML()) # , command = self.metodo
         self.botonHTML.grid(row=32,column=8)
+        self.botonHTML = Button(frame, text ="CSS", command = lambda: self.analizarCSS()) # , command = self.metodo
+        self.botonHTML.grid(row=32,column=14)
 
     def mostrarMensajeAcercaDe(self):
         mensaje = 'Proyecto 1 - Organización de Lenguajes y Compiladores1\nVania Argueta Rodríguez\nCarné 2012-13487'
@@ -101,6 +104,9 @@ class Principal:
     def analizarHTML(self):
         self.consola.delete("1.0","end")
         self.consola.insert('0.0',self.analisisHTML.analizar(self.editor.get("0.0","end"), 0))
+    def analizarCSS(self):
+        self.consola.delete("1.0","end")
+        self.consola.insert('0.0',self.analisisCSS.analizar(self.editor.get("0.0","end"), 0))
         
 
     def guardarComo(self):

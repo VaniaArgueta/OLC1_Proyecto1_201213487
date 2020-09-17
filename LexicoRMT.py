@@ -18,7 +18,7 @@ class LexicoRMT:
         self.tablaError = ''
 
     def analizarLexico(self, cadena):   
-        cadena = cadena + '                                                                    '
+        cadena = cadena.lower() + '           '
         #command= messagebox.showinfo(message= cadena, title="Análisis RMT")
                  
         caracter = ''
@@ -115,7 +115,9 @@ class LexicoRMT:
                     self.estado = 0
                     i = i-1
                     self.aux = True
-        self.imprimir()                   
+        self.imprimir()  
+        self.sintactico()
+
  
     
     def insertarToken(self, tipo, lex, fila, columna):
@@ -145,6 +147,11 @@ class LexicoRMT:
         self.tablaError = ''
         self.tablaToken = ''
         webbrowser.open_new_tab(rutaToken)
+
+    def sintactico(self):
+        command= messagebox.showinfo(message= "entro al analisis sintactico")
+        for n in self.listaTokens:
+            command= messagebox.showinfo(message= "token " + n.tipo)
 
  
 

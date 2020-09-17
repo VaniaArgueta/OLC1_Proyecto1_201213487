@@ -29,7 +29,7 @@ class LexicoHTML:
     lim = len(cadena)
     for i in range(lim):
       caracter = cadena[i]
-      command= messagebox.showinfo(message= "Estado->" + str(self.estado) + ' Pos->' + str(i)+ "->"+ caracter, title="Análisis HTML")
+      #command= messagebox.showinfo(message= "Estado->" + str(self.estado) + ' Pos->' + str(i)+ "->"+ caracter, title="Análisis HTML")
 
       if self.aux == True:
           caracter = cadena[i-1]
@@ -52,7 +52,8 @@ class LexicoHTML:
           self.columna = self.columna + 1
           self.estado = 0
         elif caracter in self.listaSignos:
-          self.insertarToken('Signo' + caracter, caracter, self.fila, self.columna) 
+          self.lexema = caracter
+          self.insertarToken('Signo' + caracter, self.lexema, self.fila, self.columna) 
           self.estado = 0
           self.columna = self.columna + 1   
         elif caracter == '<':
@@ -148,7 +149,7 @@ class LexicoHTML:
           self.estado = 4
           self.columna = self.columna + 1
         else:                        
-          command= messagebox.showinfo(message= "Aceptó " + caracter, title="Análisis RMT")
+          #command= messagebox.showinfo(message= "Aceptó " + caracter, title="Análisis RMT")
           self.verificarReservadas(self.lexema, self.fila, self.columna)
           self.estado = 0
           i = i-1
@@ -190,15 +191,15 @@ class LexicoHTML:
 
   def verificarReservadas(self,lex, fila, columna):
     if(lex in self.listaReservadas):
-      command= messagebox.showinfo(message= "Es reservada", title="Análisis RMT")
+      #command= messagebox.showinfo(message= "Es reservada", title="Análisis RMT")
       self.insertarToken('Reservada '+lex, lex,fila, columna)
     else:
-      command= messagebox.showinfo(message= "Es ID", title="Análisis RMT")
+      #command= messagebox.showinfo(message= "Es ID", title="Análisis RMT")
       self.insertarToken('Palabra/Identificador', lex, fila, columna)
 
         
   def insertarToken(self, tipo, lex, fila, columna):
-    command= messagebox.showinfo(message= "Aceptó " + lex, title="Análisis RMT")
+    #command= messagebox.showinfo(message= "Aceptó " + lex, title="Análisis RMT")
     self.resultadoToken = self.resultadoToken + "Token->"+str(tipo)+" Lexema->" + self.lexema + "\n"
     self.tablaToken = self.tablaToken + "<TR><TD>"+tipo+"</TD><TD>"+self.lexema+"</TD><TD>"+str(fila)+"</TD><TD>"+str(columna)+"</TD></TR>"
     token = Token(tipo, lex, 0, columna)
@@ -209,7 +210,7 @@ class LexicoHTML:
     
   def insertarError(self, descripcion, fila, columna):  
     self.resultadoError = self.resultadoError + "Descripción->"+ str(descripcion)+" Fila->" +str(fila)+" Columna->" +str(columna) + "\n"
-    command= messagebox.showinfo(message= "Error " + descripcion, title="Análisis RMT")  
+    #command= messagebox.showinfo(message= "Error " + descripcion, title="Análisis RMT")  
     self.tablaError = self.tablaError + "<TR><TD>"+ str(descripcion)+"</TD><TD>"+str(fila)+"</TD><TD>"+str(columna)+"</TD></TR>"
     error = Error(descripcion, fila, columna)
     print('Error ' + descripcion)
